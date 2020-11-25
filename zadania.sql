@@ -121,4 +121,27 @@ zad 3/lab_05
 zad 4/lab_05
 1. select distinct(rodzaj) from zasob;
 2. select concat (nazwa,' ',rodzaj) as nazwa_rodzaj from kreatura where rodzaj like 'wi%';
-3. 
+3. Select nazwa, waga*ilosc from zasob where YEAR(dataPozyskania) between 2000 AND 2007;
+
+zad 5/lab_05
+1. select nazwa, waga*0.7 as masa_bez_odpadkow, waga*0.3 as odpadki from zasob where rodzaj='jedzenie';
+2. select * from zasob where rodzaj is NOT NULL;
+3. select distinct(rodzaj), nazwa from zasob where nazwa like 'Ba%' or nazwa like '%os' order by nazwa ASC;
+
+zad 1/lab_06
+1. select avg(waga) as srednia_waga from kreatura where rodzaj='wiking';
+2. select rodzaj, avg(waga) as srednia_waga, count(nazwa) as liczba_kreatur from kreatura group by rodzaj;
+3. SELECT AVG(YEAR(CURDATE())-YEAR(dataUr)) AS sredni_wiek, rodzaj FROM kreatura GROUP BY rodzaj;
+
+zad 2/lab_06
+1. select avg(waga), rodzaj as waga from zasob group by rodzaj;
+2. select nazwa, avg(waga) as waga from zasob where ilosc>=4 group by nazwa having sum(waga)>1;
+*) 
+3. select rodzaj, count(nazwa) as nazwa from zasob where ilosc >= 1 group by rodzaj; 
+
+zad 3/lab_06
+1. select k.nazwa, k.idKreatury, sum(e.ilosc) from kreatura k join ekwipunek e on k.idKreatury=e.idKreatury group by e.idKreatury;
+2. select k.nazwa, z.nazwa from kreatura k join ekwipunek e on k.idKreatury=e.idKreatury join zasob z on e.idZasobu=z.idZasobu;
+3. select k.nazwa, e.ilosc from kreatura k left join ekwipunek e on k.idKreatury=e.idKreatury where ilosc is null;
+   select idKreatury from kreatura where idKreatury not in (select idKreatury from ekwipunek where idKreatury is not null);
+   
