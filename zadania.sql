@@ -135,7 +135,7 @@ zad 1/lab_06
 
 zad 2/lab_06
 1. select avg(waga), rodzaj as waga from zasob group by rodzaj;
-2. select nazwa, avg(waga) as waga from zasob where ilosc>=4 group by nazwa having sum(waga)>1;
+2. select nazwa, avg(waga) as waga from zasob where ilosc>=4 group by nazwa having sum(waga)>10;
 *) 
 3. select rodzaj, count(nazwa) as nazwa from zasob where ilosc >= 1 group by rodzaj; 
 
@@ -144,4 +144,28 @@ zad 3/lab_06
 2. select k.nazwa, z.nazwa from kreatura k join ekwipunek e on k.idKreatury=e.idKreatury join zasob z on e.idZasobu=z.idZasobu;
 3. select k.nazwa, e.ilosc from kreatura k left join ekwipunek e on k.idKreatury=e.idKreatury where ilosc is null;
    select idKreatury from kreatura where idKreatury not in (select idKreatury from ekwipunek where idKreatury is not null);
+ 
+zad 4/lab_06 
+1. select kreatura.nazwa, kreatura.dataUr, zasob.nazwa  from kreatura Join ekwipunek on ekwipunek.idKreatury = kreatura.idKreatury join zasob on ekwipunek.idZasobu = zasob.idZasobu where kreatura.dataUr between 1670 and 1679 AND kreatura.rodzaj='wiking';
+2. SELECT k.nazwa as Kreatura FROM kreatura k INNER JOIN ekwipunek e ON k.idKreatury=e.idKreatury INNER JOIN zasob z ON e.idZasobu=z.idZasobu WHERE z.rodzaj='jedzenie' ORDER BY k.dataUr DESC LIMIT 0,5;
+3. select kreatura.nazwa as kreatura1, kretura.nazwa as kreatura2 from kreatura inner join kreatura1 on kreatura1.idKreatury=kreatura.idKreatury-5; 
    
+zad 5/lab_06
+1. select kreatura.rodzaj, sum(zasob.waga*zasob.ilosc) as waga, sum(zasob.ilosc) as ilosc from kreatura inner join ekwipunek on ekwipunek.idKreatury=kreatura.idKreatury   join zasob on ekwipunek.idZasobu=zasob.idZasobu where kreatura.rodzaj NOT LIKE 'waz' AND zasob.ilosc<30 GROUP BY kreatura.rodzaj;
+2. (z nazwa, zduplikowane)
+select 'najmlodsza',a.maxData, b.nazwa, a.rodzaj
+from (select max(dataUr) maxData, rodzaj from kreatura group by rodzaj) a,
+(select nazwa, dataUr from kreatura) b where a.maxData = b.dataUr
+union
+select 'najstarsza',a.minData, b.nazwa, a.rodzaj
+from (select min(dataUr) minData, rodzaj from kreatura group by rodzaj) a,
+(select nazwa, dataUr from kreatura) b
+where a.minData = b.dataUr; 
+ 
+2*) (bez nazw, ale nie sa zduplikowane)
+select a.nazwa, a.rodzaj, a.dataUr from kreatura a, (SELECT min(dataUr) min, max(dataUr) max
+from kreatura group by rodzaj) b WHERE b.min = a.dataUr OR b.max=a.dataUr;
+
+zad 1/lab_7
+1. use wikinowie;
+1*)
