@@ -168,4 +168,19 @@ from kreatura group by rodzaj) b WHERE b.min = a.dataUr OR b.max=a.dataUr;
 
 zad 1/lab_7
 1. use wikinowie;
-1*)
+2. select nazwa from kreatury where idKreatury not in (select id_uczestnika from uczestnicy);
+3. 
+
+zad 2/lab_07
+1. select wyprawa.nazwa, count(uczestnicy.id_uczestnika) as ilosc, group_concat(kreatura.nazwa) from wyprawa join uczestnicy on
+uczestnicy.id_wyprawy=wyprawa.id_wyprawy join kreatura on kreatura.idKreatury=uczestnicy.id_uczestnika group by wyprawa.nazwa;
+2. select idEtapu, wyprawa.id_wyprawy, sektor.nazwa, data_rozpoczecia, kreatura.nazwa 
+from kreatura join uczestnicy on kreatura.idKreatury=uczestnicy.id_uczestnika
+join wyprawa on uczestnicy.id_wyprawy=wyprawa.id_wyprawy
+join etapy_wyprawy on wyprawa.id_wyprawy=etapy_wyprawy.idWyprawy
+join sektor on etapy_wyprawy.sektor=sektor.id_sektora 
+where kreatura.idKreatury = wyprawa.kierownik order by data_rozpoczecia, kolejnosc;
+
+zad 3/lab_07
+1) (? ogarnąć) select sektor.nazwa, count(sektor.id_sektora) as ilosc from etapy_wyprawy join sektor on 
+sektor.id_sektora=etapy_wyprawy.sektor group by sektor.id_sektora;
