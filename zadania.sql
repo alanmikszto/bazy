@@ -182,5 +182,19 @@ join sektor on etapy_wyprawy.sektor=sektor.id_sektora
 where kreatura.idKreatury = wyprawa.kierownik order by data_rozpoczecia, kolejnosc;
 
 zad 3/lab_07
-1) (? ogarnąć) select sektor.nazwa, count(sektor.id_sektora) as ilosc from etapy_wyprawy join sektor on 
+1) select sektor.nazwa, count(sektor.id_sektora) as ilosc from etapy_wyprawy join sektor on 
 sektor.id_sektora=etapy_wyprawy.sektor group by sektor.id_sektora;
+2)SELECT wyprawa.nazwa, SUM(LENGTH(etapy_wyprawy.dziennik)) FROM wyprawa JOIN etapy_wyprawy ON wyprawa.id_wyprawy = etapy_wyprawy.idWyprawy GROUP BY wyprawa.nazwa HAVING SUM(LENGTH(etapy_wyprawy.dziennik)) < 400;
+
+zad 4/lab_07
+1)
+2)
+SELECT w.nazwa,
+COUNT(DISTINCT(uczestnicy.id_uczestnika)),
+SUM(ekwipunek.ilosc*z.waga)/COUNT(DISTINCT(uczestnicy.id_uczestnika)) AS "średnia waga"
+FROM wyprawa
+LEFT JOIN uczestnicy ON wyprawa.id_wyprawy = uczestnicy.id_wyprawy
+LEFT JOIN kreatura ON uczestnicy.id_uczestnika = kreatura.idKreatury
+LEFT JOIN ekwipunek ON kreatura.idKreatury= ekwipunek.idKreatury
+LEFT JOIN zasob ON ekwipunek.idZasobu = zasob.idZasobu
+GROUP BY wyprawa.nazwa;
