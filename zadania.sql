@@ -198,3 +198,25 @@ LEFT JOIN kreatura ON uczestnicy.id_uczestnika = kreatura.idKreatury
 LEFT JOIN ekwipunek ON kreatura.idKreatury= ekwipunek.idKreatury
 LEFT JOIN zasob ON ekwipunek.idZasobu = zasob.idZasobu
 GROUP BY wyprawa.nazwa;
+
+
+zad 1/lab_08
+1.
+DELIMITER //
+CREATE TRIGGER kreatura_before_insert
+BEFORE INSERT ON kreatura
+FOR EACH ROW
+BEGIN
+  IF NEW.waga < 0
+  THEN
+    SET NEW.waga = 0;
+  END IF;
+END
+//
+DELIMITER ;
+
+
+2. create table archiwum_wypraw (id_wyprawy int primary key, nazwa varchar(50), data_rozpoczecia date, data_zakonczenia date, kierownik varchar(50));
+
+create trigger uczestnicy_after_delete_wyprawa
+before delete on wyprawa for each row begin insert into archiwum_wypraw values (old.id_wyprawy, old.nazwa, old.data_rozpoczecia, old.data_zakonczenia select())
