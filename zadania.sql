@@ -215,8 +215,63 @@ END
 //
 DELIMITER ;
 
+Zad 2/lab_08
+create table archiwum_wypraw (id_wyprawy int primary key, nazwa varchar(50), data_rozpoczecia date, data_zakonczenia date, kierownik varchar(50));
 
-2. create table archiwum_wypraw (id_wyprawy int primary key, nazwa varchar(50), data_rozpoczecia date, data_zakonczenia date, kierownik varchar(50));
+DELIMITER $$
+create trigger uczestnicy_after_delete_wyprawa before delete on wyprawa for each row begin insert into archiwum_wypraw values (old.id_wyprawy, old.nazwa, old.data_rozpoczecia, old.data_zakonczenia, (SELECT nazwa as kierownik from kreatura where kreatura.idKreatury=OLD.kierownik));
+END
+$$
+DELIMITER ;
 
-create trigger uczestnicy_after_delete_wyprawa
-before delete on wyprawa for each row begin insert into archiwum_wypraw values (old.id_wyprawy, old.nazwa, old.data_rozpoczecia, old.data_zakonczenia select())
+
+Zad 3/lab_08
+1. 
+DELIMITER $$
+create procedure eliksir_sily(in udzwig int)
+begin
+update kreatura set udzwig = 1.2 * udzwig where id_kreatury = udzwig;
+end
+$$
+DELIMITER ;
+
+2. ????
+
+zad 4/lab_08
+1. CREATE TABLE system_alarmowy(id_alarmu int not null auto_increment, wiadomosc);
+
+
+DELIMITER $$
+
+CREATE TRIGGER uczestnicy_after_insert
+AFTER INSERT ON uczestnicy
+FOR EACH ROW
+BEGIN
+
+IF ( SELECT id_uczestnika=14 from uczestnicy where id_wyprawy=NEW.id_wyprawy) AND
+(SELECT sektor=7 FROM etapy_wyprawy WHERE idWyprawy=NEW.id_wyprawy)
+THEN
+INSERT INTO system_alarmowy VALUES(default,'Tesciowa nadchodzi');
+END IF;
+END
+$$
+
+DELIMITER ;
+
+
+
+CWICZENIA - 2
+1. select pracownik.imie, pracownik.nazwisko, dzial.nazwa from pracownik join dzial on pracownik.dzial=dzial.id_dzialu;
+2. select towar.nazwa_towaru, kategoria.nazwa_kategori, stan_magazynowy.ilosc, jednostka_miary.nazwa from towar join kategoria on towar.kategoria=kategoria.id_kategori join stan_magazynowy on stan_magazynowy.towar=towar.id_towaru join jednostka_miary on stan_magazynowy.jm=jednostka_miary.id_jednostki order by stan_magazynowy.ilosc DESC;
+3. SELECT jednostka_miary.nazwa FROM jednostka_miary JOIN stan_magazynowy ON jednostka_miary.id_jednostki=stan_magazynowy.jm WHERE stan_magazynowy.jm NOT IN(3,4);
+4.
+5.select * FROM jednostka_miary LEFT JOIN stan_magazynowy ON jednostka_miary.id_jednostki=stan_magazynowy.jm where stan_magazynowy.jm IS NULL;
+6. select zamowienie.numer_zamowienia, towar.nazwa_towaru, stan_magazynowy.ilosc, pozycja_zamowienia.cena from stan_magazynowy join towar on stan_magazynowy.towar=towar.id_towaru join pozycja_zamowienia on towar.id_towaru=pozycja_zamowienia.towar join zamowienie on zamowienie.id_zamowienia=pozycja_zamowienia.zamowienie where year(zamowienie.data_zamowienia) = 2018; 
+8. select * from pozycja_zamowienia join zamowienie on pozycja_zamowienia.zamowienie=zamowienie.id_zamowienia order by zamowienie.data_zamowienia ASC LIMIT 5;
+10. SELECT * FROM adres_klienta WHERE kod NOT REGEXP '[0-9]{2}-[0-9]{3}';
+
+CWICZENIA - 3
+1. SELECT imie, nazwisko, YEAR(data_urodzenia) as rok_urodzenia from pracownik;
+2. SELECT imie, nazwisko, YEAR(current_date())-YEAR(data_urodzenia) as wiek from pracownik;
+3. select dzial.nazwa, count(pracownik.id_pracownika) as ilosc from dzial join pracownik on pracownik.dzial = dzial.id_dzialu group by dzial.nazwa;
+
