@@ -274,4 +274,11 @@ CWICZENIA - 3
 1. SELECT imie, nazwisko, YEAR(data_urodzenia) as rok_urodzenia from pracownik;
 2. SELECT imie, nazwisko, YEAR(current_date())-YEAR(data_urodzenia) as wiek from pracownik;
 3. select dzial.nazwa, count(pracownik.id_pracownika) as ilosc from dzial join pracownik on pracownik.dzial = dzial.id_dzialu group by dzial.nazwa;
-4. select kategoria.nazwa_kategori, sum(stan_magazynowy.ilosc) from kategoria join towar on  kategoria.id_kategori=towar.kategoria join stan_magazynowy on towar.id_towaru=stan_magazynowy.towar group by kategoria.nazwa_kategori;
+4. select kategoria.nazwa_kategori, sum(stan_magazynowy.ilosc) from kategoria join towar on 
+kategoria.id_kategori=towar.kategoria join stan_magazynowy on
+towar.id_towaru=stan_magazynowy.towar group by kategoria.nazwa_kategori;
+5. select kategoria.nazwa_kategori, group_concat(towar.nazwa_towaru, ' ') from towar join kategoria on
+kategoria.id_kategori=towar.kategoria group by kategoria.nazwa_kategori;
+6. select ROUND(avg(pensja), 2) from pracownik;
+7. select avg(pensja) from pracownik where YEAR(data_zatrudnienia) < 2015; //chyba źle 
+8.select nazwa_towaru,sum(ilosc) as ilosc from pozycja_zamowienia join towar on pozycja_zamowienia.towar = towar.id_towaru group by towar order by ilosc desc limit 10;
